@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">PicFinder</string>
+    <string name="searchable">Enter Your Search</string>
+    <string name="menu_1">Option 1</string>
+    <string name="menu_2">Option 2</string>
+    <string name="menu_search">Search</string>
+    <string name="my_toolbar_title">Picture Finder</string>
+</resources>
