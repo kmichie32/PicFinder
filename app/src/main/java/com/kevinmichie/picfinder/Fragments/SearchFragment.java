@@ -1,10 +1,12 @@
 package com.kevinmichie.picfinder.Fragments;
 
-import android.app.Fragment;
+import android.support.v4.app.Fragment;
 import android.content.Context;
 import android.databinding.DataBindingUtil;
+import android.databinding.ViewDataBinding;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +14,7 @@ import android.view.ViewGroup;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import com.kevinmichie.picfinder.API.SearchAPI;
 import com.kevinmichie.picfinder.Adapters.RestAdapter;
 import com.kevinmichie.picfinder.Delegates.SearchFragmentDelegate;
 import com.kevinmichie.picfinder.R;
@@ -25,7 +28,7 @@ import rx.android.schedulers.AndroidSchedulers;
 
 public class SearchFragment extends Fragment {
     private static final String TAG = SearchFragment.class.getSimpleName();
-    private FragmentSearchBinding b;
+    private ViewDataBinding b;
     private SearchFragmentDelegate mDelegate;
 
     public static SearchFragment newInstance() {
@@ -46,16 +49,16 @@ public class SearchFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        b = DataBindingUtil.inflate(inflater, R.layout.fragment_search, container, false);
+        b = DataBindingUtil.inflate(inflater, R.xml.searchable, container, false);
+        final RecyclerView view = (RecyclerView) b.getRoot();
 
-
-        b.searchButton.setOnClickListener(v -> {
+        view.setOnClickListener(v -> {
 
             Log.d(TAG, "CLICK!");
 
             RestAdapter.getInstance()
-                    .create(SearchApi.class)
-                    .searchForImage("2688343-2891f1fe0c477ac2e59b83e53", b.searchEditText.getText().toString())
+                    .create(SearchAPI.class)
+                    .searchForImage("2688343-2891f1fe0c477ac2e59b83e53", view.toString())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(jsonObjectResponse -> {
 
@@ -102,7 +105,6 @@ public class SearchFragment extends Fragment {
 
         return b.getRoot();
     }
-
     @Override
     public void onDetach() {
         mDelegate = null;
